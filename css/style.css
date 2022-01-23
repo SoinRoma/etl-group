@@ -579,7 +579,7 @@ input[type="checkbox"]:checked::after {
         display: block !important;
     }
     .footer-altek{
-        display: block;
+        justify-content: center;
     }
 
     .phone-text{
