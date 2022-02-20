@@ -1,7 +1,7 @@
-particlesJS.load('particles-js', 'particles.json', function() {
+particlesJS.load('particles-js', 'static/js/particles.json', function() {
 });
 
-particlesJS.load('particles-js2', 'particles.json', function() {
+particlesJS.load('particles-js2', 'static/js/particles.json', function() {
 });
 
 

@@ -1,29 +1,36 @@
+{% load static %}
+{#{% load contact_information %}#}
+{#{% get_contact_information as contact %}#}
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width">
 
-    <meta name="twitter:image:src" content="https://soinroma.github.io/etl-group/images/banner.png">
+    <meta name="twitter:image:src" content="https://etlgroupllc.com/static/images/banner.png">
     <meta name="twitter:card" content="summary_large_image"/>
     <meta name="twitter:site" content="ETL Group">
     <meta name="twitter:title" content="Transportation, Logistics & Brokerage Consulting">
     <meta name="twitter:description" content="LOGISTICS CONSULTING & SUPPLY CHAIN MANAGEMENT">
 
     <meta property="og:type" content="website"/>
-    <meta property="og:url" content="https://soinroma.github.io/etl-group/"/>
+    <meta property="og:url" content="https://etlgroupllc.com/"/>
     <meta property="og:site_name" content="ETL Group"/>
     <meta property="og:title" content="Transportation, Logistics & Brokerage Consulting"/>
     <meta property="og:description" content="LOGISTICS CONSULTING & SUPPLY CHAIN MANAGEMENT"/>
-    <meta property="og:image" content="https://soinroma.github.io/etl-group/images/banner.png"/>
+    <meta property="og:image" content="https://etlgroupllc.com/static/images/banner.png"/>
     <meta property="og:image:width" content="1200"/>
     <meta property="og:image:height" content="600"/>
 
 
     <title>ETL Group</title>
-    <link rel="icon" href="images/logo.png"/>
-    <link rel="stylesheet" href="css/style.css?v=3">
-    <script src="js/jquery.js"></script>
+    <link rel="icon" href="{% static 'images/logo.png' %}">
+    <link rel="stylesheet" href="{% static 'js/toastr/toastr.css' %}">
+    <link rel="stylesheet" href="{% static 'css/style.css' %}?v=3">
+    <script src="{% static 'js/jquery.js' %}"></script>
+    <script src="{% static 'js/tsparticles.pathseg.min.js' %}"></script>
+    <script src="{% static 'js/toastr/toastr.js' %}"></script>
+    <script src="{% static 'js/input.mask.js' %}"></script>
 </head>
 <body>
 
@@ -32,7 +39,7 @@
         <nav class="header-nav">
             <div class="logo-text">
                 <a href="./">
-                    <img class="logo" src="images/logo.png" alt="logo"/>
+                    <img class="logo" src="{% static 'images/logo.png' %}" alt="logo"/>
                 </a>
                 <p class="logo-text">
                     Transportation, <br/>
@@ -40,8 +47,8 @@
                 </p>
             </div>
             <div class="header-phone">
-                <a class="phone-number" href="tel:+1 (267) 843 4286">+1 (267) 843 4286</a>
-                <a class="phone-text" href="tel: +1 (267) 843 4286">Call us</a>
+                <a class="phone-number" href="tel: {{ contact.phone }}">{{ contact.phone }}</a>
+                <a class="phone-text" href="tel: {{ contact.phone }}">Call us</a>
             </div>
         </nav>
     </header>
@@ -77,10 +84,10 @@
         </p>
     </div>
     <div class="images">
-        <img class="image1" src="images/1.png" alt="1"/>
-        <img class="image2" src="images/2.png" alt="2"/>
-        <img class="image3" src="images/3.png" alt="3"/>
-        <img class="image4" src="images/4.png" alt="4"/>
+        <img class="image1" src="{% static 'images/1.png' %}" alt="1"/>
+        <img class="image2" src="{% static 'images/2.png' %}" alt="2"/>
+        <img class="image3" src="{% static 'images/3.png' %}" alt="3"/>
+        <img class="image4" src="{% static 'images/4.png' %}" alt="4"/>
     </div>
 
 </div>
@@ -89,7 +96,7 @@
         <h3 class="title-third">
             Get in touch
         </h3>
-        <form action="#">
+        <form action="#" id="feedbackCreateForm">
 
             <div class="group">
                 <input class="form-text" type="text" required id="name" autocomplete="off">
@@ -114,13 +121,13 @@
 
             <div class="group">
                 <div class="ans-label">
-                    <input id="checkbox" type="checkbox" class="checkbox square">
+                    <input id="checkbox" type="checkbox" class="checkbox square" required>
                     &nbsp;I am agree with privacy police
                 </div>
             </div>
 
             <div class="group">
-                <button type="submit" class="btn">Submit</button>
+                <button type="submit" class="btn" id="submitBtn">Submit</button>
             </div>
         </form>
         <h3 class="span loader">
@@ -154,12 +161,12 @@
     </div>
     <hr>
     <div class="footer">
-        <p class="footer-text">ETL Group. 2022 ©</p>
+        <p class="footer-text">ETL Group. {% now "Y" %} ©</p>
         <p class="footer-text">All right reserved.</p>
         <p class="footer-text footer-altek">
             Powered by:
             <a target="_blank" href="https://altek.icu/">
-                <img class="altek" src="images/altek.svg" alt="ALTEK">
+                <img class="altek" src="{% static 'images/altek.svg' %}" alt="ALTEK">
             </a>
         </p>
 
@@ -169,7 +176,71 @@
 </div>
 
 
-<script src="js/particles.js"></script>
-<script src="js/main.js"></script>
+<script src="{% static  'js/particles.js' %}"></script>
+<script src="{% static 'js/main.js' %}"></script>
 </body>
+
+<script>
+
+    $("#phone").inputmask({
+            "mask": "+1 (ddd) ddd-dddd"
+    });
+
+    $("#feedbackCreateForm").submit(function (event) {
+
+        event.preventDefault();
+        let requestData = new FormData();
+        requestData.append('name', $('#name').val());
+        requestData.append('phone', $('#phone').val());
+        requestData.append('comment', $('#comment').val());
+        requestData.append('agree', $('#checkbox').val());
+
+        const submitBtn = document.getElementById('submitBtn');
+        submitBtn.disabled = true;
+
+
+        let url = "{% url 'feedback:create' %}";
+        $.ajax({
+            headers: {"X-CSRFToken": "{{csrf_token}}"},
+            url: url,
+            processData: false,
+            contentType: false,
+            method: 'POST',
+            data: requestData,
+            success: function (data) {
+                toastr.success(
+                    'YOUR REQUEST HAS BEEN\n' +
+                    'SENT SUCCESSFULLY!',
+                    'Success',
+                    {
+                        positionClass: "toast-top-center",
+                        timeOut: 2000,
+                        fadeOut: 1000,
+                    }
+                );
+
+                $('#feedbackCreateForm')[0].reset();
+                submitBtn.disabled = false;
+
+            },
+            error: function (data) {
+                toastr.error(
+                    data.responseText,
+                    'Error',
+                    {
+                        positionClass: "toast-top-center",
+                        timeOut: 2000,
+                        fadeOut: 1000,
+                    }
+                );
+                submitBtn.disabled = false;
+            }
+
+
+        });
+
+    });
+
+</script>
+
 </html>

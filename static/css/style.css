@@ -14,8 +14,8 @@ body {
 }
 
 .first {
-    height: 745px;
     width: 100%;
+    height: 100vh;
 }
 
 .header {
@@ -146,7 +146,7 @@ body {
 
 .second {
     z-index: 999999999 !important;
-    position: absolute;
+    position: relative;
     background: #1D1D1D;
     height: 730px;
     width: 100%;
@@ -222,7 +222,6 @@ body {
     height: 1030px;
     width: 100%;
     position: absolute;
-    top: 1505px;
 }
 
 .title-third {
