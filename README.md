@@ -2,7 +2,7 @@
 
 ## Описание
 Сайт для логистической фирмы ETL Group. 
-Данный сайт состоит из трёх секций.На сайте присуствует бэкенд(Django)
+Данный сайт состоит из трёх секций. На сайте присуствует бэкенд(Django).
 Есть форма отправки данных пользователей на рассмотрение.
 
 ### Используемые технологии
@@ -10,6 +10,7 @@
 ![CSS3](https://img.shields.io/badge/-CSS3-black?style=flat-square&logo=css3&logoColor=css3)
 ![JavaScript](https://img.shields.io/badge/-JavaScript-black?style=flat-square&logo=javascript)
 ![Python](https://img.shields.io/badge/-Python-black?style=flat-square&logo=python)
+![Django](https://img.shields.io/badge/-Django-black?style=flat-square&logo=django)
 
 ### Используемые плагины/библиотеки
 ![Particle](https://img.shields.io/badge/-PARTICLES-black?style=flat-square&logo=particles&logoColor=particles)
