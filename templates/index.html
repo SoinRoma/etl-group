@@ -47,8 +47,13 @@
                 </p>
             </div>
             <div class="header-phone">
-                <a class="phone-number" href="tel: {{ contact.phone }}">{{ contact.phone }}</a>
-                <a class="phone-text" href="tel: {{ contact.phone }}">Call us</a>
+                {% if contact.phone %}
+                    <a class="phone-number" href="tel: {{ contact.phone }}">{{ contact.phone }}</a>
+                    <a class="phone-text" href="tel: {{ contact.phone }}">Call us</a>
+                {% else %}
+                    <a class="phone-number" href="tel: +123456789">+123456789</a>
+                    <a class="phone-text" href="tel: +123456789">Call us</a>
+                {% endif %}
             </div>
         </nav>
     </header>
@@ -183,7 +188,7 @@
 <script>
 
     $("#phone").inputmask({
-            "mask": "+1 (ddd) ddd-dddd"
+        "mask": "+1 (ddd) ddd-dddd"
     });
 
     $("#feedbackCreateForm").submit(function (event) {
