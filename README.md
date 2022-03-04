@@ -41,6 +41,8 @@ copy example.env .env
 6 - Сделать миграции
 ```
 python manage.py makemigrations
+```
+```
 python manage.py migrate
 ```
 7 - Запустить сервер
