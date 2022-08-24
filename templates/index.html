@@ -1,6 +1,4 @@
 {% load static %}
-{#{% load contact_information %}#}
-{#{% get_contact_information as contact %}#}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -31,6 +29,18 @@
     <script src="{% static 'js/tsparticles.pathseg.min.js' %}"></script>
     <script src="{% static 'js/toastr/toastr.js' %}"></script>
     <script src="{% static 'js/input.mask.js' %}"></script>
+
+
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-FPV2WTYPMT"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() {
+            dataLayer.push(arguments);
+        }
+        gtag('js', new Date());
+        gtag('config', 'G-FPV2WTYPMT');
+    </script>
+
 </head>
 <body>
 
@@ -47,13 +57,8 @@
                 </p>
             </div>
             <div class="header-phone">
-                {% if contact.phone %}
-                    <a class="phone-number" href="tel: {{ contact.phone }}">{{ contact.phone }}</a>
-                    <a class="phone-text" href="tel: {{ contact.phone }}">Call us</a>
-                {% else %}
-                    <a class="phone-number" href="tel: +123456789">+123456789</a>
-                    <a class="phone-text" href="tel: +123456789">Call us</a>
-                {% endif %}
+                <a class="phone-number" href="tel: {{ contact.phone }}">{{ contact.phone }}</a>
+                <a class="phone-text" href="tel: {{ contact.phone }}">Call us</a>
             </div>
         </nav>
     </header>
@@ -102,26 +107,25 @@
             Get in touch
         </h3>
         <form action="#" id="feedbackCreateForm">
-
             <div class="group">
                 <input class="form-text" type="text" required id="name" autocomplete="off">
                 <span class="highlight"></span>
                 <span class="bar"></span>
-                <label>Your Name</label>
+                <label for="name">Your Name</label>
             </div>
 
             <div class="group">
                 <input class="form-text" type="text" required id="phone" autocomplete="off">
                 <span class="highlight"></span>
                 <span class="bar"></span>
-                <label>Your Phone</label>
+                <label for="phone">Your Phone</label>
             </div>
 
             <div class="group">
                 <input class="form-text" type="text" required id="comment" autocomplete="off">
                 <span class="highlight"></span>
                 <span class="bar"></span>
-                <label>Describe your task...</label>
+                <label for="comment">Describe your task...</label>
             </div>
 
             <div class="group">
@@ -174,16 +178,12 @@
                 <img class="altek" src="{% static 'images/altek.svg' %}" alt="ALTEK">
             </a>
         </p>
-
     </div>
-
-
 </div>
 
 
 <script src="{% static  'js/particles.js' %}"></script>
 <script src="{% static 'js/main.js' %}"></script>
-</body>
 
 <script>
 
@@ -191,20 +191,17 @@
         "mask": "+1 (ddd) ddd-dddd"
     });
 
-    $("#feedbackCreateForm").submit(function (event) {
-
+    $("#feedbackCreateForm").submit((event) => {
         event.preventDefault();
+
+        const url = "{% url 'feedback:create' %}";
         let requestData = new FormData();
         requestData.append('name', $('#name').val());
         requestData.append('phone', $('#phone').val());
         requestData.append('comment', $('#comment').val());
         requestData.append('agree', $('#checkbox').val());
 
-        const submitBtn = document.getElementById('submitBtn');
-        submitBtn.disabled = true;
-
-
-        let url = "{% url 'feedback:create' %}";
+        document.getElementById('submitBtn').disabled = true;
         $.ajax({
             headers: {"X-CSRFToken": "{{csrf_token}}"},
             url: url,
@@ -212,7 +209,7 @@
             contentType: false,
             method: 'POST',
             data: requestData,
-            success: function (data) {
+            success: () => {
                 toastr.success(
                     'YOUR REQUEST HAS BEEN\n' +
                     'SENT SUCCESSFULLY!',
@@ -225,10 +222,9 @@
                 );
 
                 $('#feedbackCreateForm')[0].reset();
-                submitBtn.disabled = false;
-
+                document.getElementById('submitBtn').disabled = false;
             },
-            error: function (data) {
+            error: (data) => {
                 toastr.error(
                     data.responseText,
                     'Error',
@@ -238,14 +234,12 @@
                         fadeOut: 1000,
                     }
                 );
-                submitBtn.disabled = false;
+                document.getElementById('submitBtn').disabled = false;
             }
-
-
         });
-
     });
 
 </script>
 
+</body>
 </html>
